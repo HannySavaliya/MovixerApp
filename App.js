@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { PlaceProvider } from './PlaceContext'; // Import PlaceProvider
 import Navigation from './navigation/Navigation';
