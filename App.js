@@ -1,20 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { PlaceProvider } from './PlaceContext'; // Import PlaceProvider
+import { StyleSheet } from 'react-native';
+import { PlaceProvider } from './PlaceContext'; 
 import Navigation from './navigation/Navigation';
 
 export default function App() {
   return (
     <PlaceProvider> 
-        <Navigation />
+      <Navigation />
     </PlaceProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const styles = StyleSheet.create({});

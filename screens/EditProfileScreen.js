@@ -1,25 +1,37 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { AntDesign, Ionicons } from '@expo/vector-icons'; 
 import { useFormik } from "formik";
 import { REGISTRATION_SCHEMA } from "../utils/formikValidation";
+import { colors } from "../Theme/theme";
 
 const EditProfileScreen = ({ navigation }) =>{
 
     const [isWomen, setIsWomen] = useState(false)
     const [isYes, setIsYes] = useState(false)
 
-    const handleIdentityChange = (identity) => {
-        setIsWomen(identity);
+    const handleWomenChange = () => {
+        setIsWomen(true);
+    };
+    
+    const handleMenChange = () => {
+        setIsWomen(false);
+    };
+
+    const handleYesChange = () => {
+        setIsYes(true);
+    };
+    
+    const handleNoChange = () => {
+        setIsYes(false);
     };
 
     const formik = useFormik({
         initialValues: {
             mobileNumber: '',
-            fullname: '',
             email: '',
+            fullname: '',
             birthday: '',
-            married: ''
         },
         validationSchema: REGISTRATION_SCHEMA, 
         onSubmit: (values) =>{
@@ -28,91 +40,98 @@ const EditProfileScreen = ({ navigation }) =>{
     });
 
     return(
-        <View style={style.container}>
-            <View style={style.headerContain}> 
-                <TouchableOpacity onPress={() => navigation.navigate('Account')}>
-                    <AntDesign name="closecircle" size={24} color="#FFAF45" style={style.iconCancel} />
+        <ScrollView>
+            <View style={style.container}>
+
+                <View style={style.headerContain}> 
+                    <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+                        <AntDesign name="closecircle" size={24} color="#FFAF45" style={style.iconCancel} />
+                    </TouchableOpacity>
+                    <Text style={style.title}>Edit Profile</Text>
+                </View>
+
+                <Ionicons name="person-circle-outline" size={90} color="grey" style={style.profilePic}/>
+                <Text style={style.addPhoto}>Add Photo</Text>
+
+
+                <View style={style.inputContainer}>
+
+                    <Text style={{fontSize: 18}}>Mobile Number</Text>
+                    <TextInput
+                        value={formik.values.mobileNumber}
+                        onChangeText={formik.handleChange('mobileNumber')}
+                        placeholder="Add Mobile Number "
+                        style={[style.input, formik.errors.mobileNumber ? style.errorBorder : '']}
+                    />
+                    {formik.errors.mobileNumber && <Text style={{color: 'red',marginBottom: 20}}>{formik.errors.mobileNumber}</Text>}
+
+                    <Text style={{fontSize: 18, marginTop: 10}}>Email Address</Text>
+                    <TextInput
+                        placeholder="email"
+                        value={formik.values.email}
+                        onChangeText={formik.handleChange('email')}
+                        style={[style.input, formik.errors.email ? style.errorBorder : '']}
+                    />
+                    {formik.errors.email && <Text style={{color: 'red',marginBottom: 20}}>{formik.errors.email}</Text>}
+
+                    <Text style={{fontSize: 18, marginTop: 20, fontWeight: "bold"}}>Personal Details</Text>
+
+                    <Text style={{fontSize: 15, marginTop: 20}}>Full Name</Text>
+                    <TextInput
+                        placeholder="Enter full name here"
+                        value={formik.values.fullname}
+                        onChangeText={formik.handleChange('fullname')}
+                        style={[style.input, formik.errors.fullname ? style.errorBorder : '']}
+                    />
+                    {formik.errors.fullname && <Text style={{color: 'red', marginBottom: 10}}>{formik.errors.fullname}</Text>}
+                    
+                    <Text style={{fontSize: 15, marginTop: 15}}>Birthday (Optional)</Text>
+                    <TextInput
+                        value={formik.values.birthday}
+                        onChangeText={formik.handleChange('birthday')}
+                        placeholder="DD/MM/YY"
+                        style={[style.input, formik.errors.birthday ? style.errorBorder : '']}
+                    />
+                    {formik.errors.birthday && <Text style={{color: 'red', marginBottom: 10}}>{formik.errors.birthday}</Text>}
+                    
+                    <Text style={{ fontSize: 15, marginTop: 15 }}>Identity (Optional)</Text>
+                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                        <View style={isWomen ? [style.identity, style.selected] : style.identity}>
+                            <TouchableOpacity onPress={handleWomenChange}>
+                                <Text style={{ textAlign: 'center' }}>Women</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={!isWomen ? [style.identity, style.selected] : style.identity}>
+                            <TouchableOpacity onPress={handleMenChange}>
+                                <Text style={{ textAlign: 'center' }}>Men</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <Text style={{fontSize: 15, marginTop: 20}}>Married (Optional)</Text>
+                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                        <View style={isYes ? [style.identity, style.selected] : style.identity}>
+                            <TouchableOpacity onPress={handleYesChange}>
+                                <Text style={{ textAlign: 'center' }}>Yes</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={!isYes ? [style.identity, style.selected] : style.identity}>
+                            <TouchableOpacity onPress={handleNoChange}>
+                                <Text style={{ textAlign: 'center' }}>No</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    
+                </View>
+
+                <TouchableOpacity  onPress={formik.handleSubmit}>
+                    <Text style={style.saveBtn}>Save Changes</Text>
                 </TouchableOpacity>
-                <Text style={style.title}>Edit Profile</Text>
-            </View>
-
-            <Ionicons name="person-circle-outline" size={90} color="grey" style={style.profilePic}/>
-            <Text style={style.addPhoto}>Add Photo</Text>
-
-            <View style={style.inputContainer}>
-
-                <Text style={{fontSize: 18}}>Mobile Number</Text>
-                <TextInput
-                    style={style.input}
-                    value={formik.values.mobileNumber}
-                    placeholder="Add Mobile Number "
-                />
-
-                <Text style={{fontSize: 18}}>Email Address</Text>
-                <TextInput
-                    placeholder="email"
-                    value={formik.values.email}
-                    onChangeText={formik.handleChange('email')}
-                    style={[style.input, formik.errors.email ? style.errorBorder : '']}
-                />
-                {formik.errors.email && <Text style={{color: 'red'}}>{formik.errors.email}</Text>}
-
-                <Text style={{fontSize: 18, marginTop: 20, fontWeight: "bold"}}>Personal Details</Text>
-
-                <Text style={{fontSize: 15, marginTop: 20}}>Full Name</Text>
-                <TextInput
-                    placeholder="Enter full name here"
-                    value={formik.values.fullname}
-                    onChangeText={formik.handleChange('fullname')}
-                    style={[style.input, formik.errors.fullname ? style.errorBorder : '']}
-                />
-                {formik.errors.fullname && <Text style={{color: 'red'}}>{formik.errors.fullname}</Text>}
-                
-                <Text style={{fontSize: 15, marginTop: 15}}>Birthday (Optional)</Text>
-                <TextInput
-                    style={style.input}
-                    value={formik.values.birthday}
-                    placeholder="DD/MM/YY"
-                />
-
-                <Text style={{fontSize: 15, marginTop: 15}}>Identity (Optional)</Text>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                    <View style={style.identity}>
-                        <TouchableOpacity onPress={() => handleIdentityChange(false)} style={[ !isWomen ? style.selected : null]}>
-                            <Text style={{textAlign: 'center'}}>Women</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={style.identity}>
-                        <TouchableOpacity onPress={() => handleIdentityChange(true)} style={[ isWomen ? style.selected : null]}>
-                            <Text style={{textAlign: 'center'}}>Men</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <Text style={{fontSize: 15, marginTop: 20}}>Married (Optional)</Text>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                    <View style={style.identity}>
-                        <TouchableOpacity onPress={() => handleIdentityChange(false)} style={[ !isYes ? style.selected : null]}>
-                            <Text style={{textAlign: 'center'}}>Yes</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={style.identity}>
-                        <TouchableOpacity onPress={() => handleIdentityChange(true)} style={[ isYes ? style.selected : null]}>
-                            <Text style={{textAlign: 'center'}}>No</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                
 
             </View>
-
-            <TouchableOpacity  onPress={formik.handleSubmit}>
-                <Text style={style.updateBtn}>Update</Text>
-            </TouchableOpacity>
-            
-        </View>
+        </ScrollView>    
+        
     )
 }
 
@@ -151,21 +170,22 @@ const style = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 4,
         padding: 5,
-        marginBottom: 20,
         marginTop: 8,
         paddingLeft: 20
     },
     errorBorder: {
-        borderColor: 'red'
+        borderColor: colors.error
     },
-    updateBtn: {
+    saveBtn: {
         marginTop: 50,
         width: 200,
         fontSize: 17,
-        backgroundColor: '#FFAF45',
+        backgroundColor: colors.yellow,
         borderRadius: 10,
         textAlign: 'center',
-        paddingVertical: 5
+        paddingVertical: 6,
+        marginBottom: 50,
+        justifyContent: 'center'
     },
     identity: {
         borderWidth: 1,
@@ -173,6 +193,9 @@ const style = StyleSheet.create({
         padding: 7,
         width: 80,
         marginRight: 20
+    },
+    selected: {
+        backgroundColor: colors.yellow,
     }
 })
 
