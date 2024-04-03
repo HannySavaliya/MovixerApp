@@ -347,29 +347,21 @@ const HomeScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <Text>Hello Movixer</Text>,
-      headerStyle: {
-        backgroundColor: '#F5F5F5',
-        shadowColor: 'transparent',
-        shadowOpacity: 0.3,
-        shadowOffset: { width: -1, height: 1 },
-        shadowRadius: 3,
-      },
       headerRight: () => (
         <Pressable
           style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
-          onPress={() => navigation.navigate("Places")}
+          
         >
           <Ionicons name="notifications-outline" size={24} color="black" />
-          <Ionicons name="location-outline" size={24} color="black" />
-            <Text style={styles.text}>{selectedCity}</Text>
+          <Ionicons name="location-outline" size={24} color="black" onPress={() => navigation.navigate("Places")}/>
+            <Text style={style.text}>{selectedCity}</Text>
         </Pressable>
       ),
     });
   }, [navigation, moveAnimation, selectedCity]);
 
   return (
-    <View style={styles.container}>
+    <View style={style.container}>
         <FlatList
         numColumns={2}
         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -383,7 +375,7 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -391,5 +383,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    marginRight: 15
   },
 });

@@ -38,7 +38,7 @@ const SettingsScreen = ({ navigation }) => {
                 </View>
 
                 <View style={style.radio}>
-                    <Text style={style.label}>Dark  Mode</Text>
+                    <Text style={style.label}>Dark Mode</Text>
                     <TouchableOpacity onPress={() => handleModeChange(true)} style={[style.radioButton, isDarkMode ? style.selected : null]}>
                         { isDarkMode && <View style={style.radioDot}></View> }
                     </TouchableOpacity>
