@@ -5,12 +5,12 @@ const Header = () => {
     return (
         <View style={{ marginBottom: 55 }}>
             <ImageBackground
-                style={{ height: 200, width: 420, resizeMode: "contain" }}
+                style={{ height: 220, width: 420, resizeMode: "contain" }}
                 source={{
                     uri: "https://originserver-static1-uat.pvrcinemas.com/newweb/movies/thumb/374x226/HO00022376.jpg?v=4",
                 }}
             >
-                <Pressable style={{ height: 90, backgroundColor: 'white', padding: 10, borderRadius: 5, width: '90%', top: 160, marginLeft: 'auto', marginRight: 'auto' }}>
+                <Pressable style={{ height: 80, backgroundColor: 'white', padding: 10, borderRadius: 8, width: '80%', top: 170,marginRight : 'auto',marginLeft : 28}}>
                     <View style={{flexDirection : 'row',alignItems : 'center',justifyContent : 'space-between' }}>
                         <View>
                             <Text style={{fontSize:15,fontWeight:'500'}}>Releasing in 1 Day</Text>
@@ -29,3 +29,5 @@ const Header = () => {
 export default Header
 
 const styles = StyleSheet.create({}) 
+
+

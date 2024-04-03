@@ -3,13 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { AntDesign, Octicons } from '@expo/vector-icons';
-
 import PlacesScreen from "../screens/PlacesScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import AccountScreen from "../screens/AccountScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
+import MovieScreen from "../screens/MovieScreen";
 
 const ProfileStack = createStackNavigator();
 
@@ -20,6 +20,7 @@ function HomeStackScreens() {
         <HomeStack.Navigator initialRouteName="SplashScreen">
             <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{title:""}} />
             <HomeStack.Screen name="Places" component={PlacesScreen} />
+            <HomeStack.Screen name="Movie" component={MovieScreen} />
             
         </HomeStack.Navigator>
     )

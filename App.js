@@ -1,20 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { PlaceProvider } from './PlaceContext'; // Import PlaceProvider
+import React from 'react';
+import { Provider } from 'react-redux';
+import Store from './Store';
 import Navigation from './navigation/Navigation';
+import { ModalPortal } from 'react-native-modals';
+import { PlaceProvider } from './PlaceContext';
 
 export default function App() {
   return (
-    <PlaceProvider> 
+    <Provider store={Store}>
+      <PlaceProvider>
         <Navigation />
-    </PlaceProvider>
+        <ModalPortal />
+      </PlaceProvider>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

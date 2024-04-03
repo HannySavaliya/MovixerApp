@@ -1,16 +1,13 @@
+import React, { createContext, useState } from 'react';
 
-import { createContext, useState } from "react";
+export const PlaceContext = createContext();
 
-const PlaceContext = createContext();
+export const PlaceProvider = ({ children }) => {
+  const [selectedCity, setSelectedCity] = useState(null);
 
-const PlaceProvider = ({ children }) => { 
-    const [selectedCity, setSelectedCity] = useState("");
-
-    return (
-        <PlaceContext.Provider value={{ selectedCity, setSelectedCity }}> 
-            {children}
-        </PlaceContext.Provider>
-    );
-}
-
-export { PlaceContext, PlaceProvider }; 
+  return (
+    <PlaceContext.Provider value={{ selectedCity, setSelectedCity }}>
+      {children}
+    </PlaceContext.Provider>
+  );
+};
