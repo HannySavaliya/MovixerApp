@@ -15,7 +15,7 @@ import Login from '../screens/Login';
 import ProfileScreen from '../screens/ProfileScreen';
 import MovieScreen from '../screens/MovieScreen';
 import TheaterScreen from '../screens/TheaterScreen';
-import PaymentScreen from '../screens/PaymentScreen';
+import PaymentScreen from '../screens/Paymentscreen';
 
 
 
