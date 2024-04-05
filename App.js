@@ -1,13 +1,13 @@
+import { StyleSheet } from 'react-native';
+import { PlaceProvider } from './PlaceContext'; 
 import Navigation from './navigation/Navigation';
-import { PlaceProvider } from './PlaceContext';
 
-function App() {
+export default function App() {
   return (
     <PlaceProvider> 
-        <Navigation />
+      <Navigation />
     </PlaceProvider>
   );
 }
 
-export default App
-
+const styles = StyleSheet.create({});
