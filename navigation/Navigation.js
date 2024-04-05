@@ -17,9 +17,6 @@ import MovieScreen from '../screens/MovieScreen';
 import TheaterScreen from '../screens/TheaterScreen';
 import PaymentScreen from '../screens/Paymentscreen';
 
-
-
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
