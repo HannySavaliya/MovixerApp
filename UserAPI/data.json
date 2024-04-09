@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "fullname": "Hanny Savaliya",
+      "email": "hanny11@gmail.com",
+      "password": "hanny123",
+      "confirmPassword": "hanny123",
+      "mobileNumber": "9313979032"
+    },
+    {
+      "id": "1fba",
+      "fullname": "Sneha Khunt",
+      "email": "sneha11@gmail.com",
+      "password": "sneha11",
+      "confirmPassword": "sneha11",
+      "mobileNumber": "7984742846"
+    }
+  ]
+}
