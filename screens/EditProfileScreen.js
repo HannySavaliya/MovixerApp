@@ -1,132 +1,155 @@
-import React, { useState } from "react";
-import { Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { AntDesign, Ionicons } from '@expo/vector-icons'; 
 import { useFormik } from "formik";
-import { REGISTRATION_SCHEMA } from "../utils/formikValidation";
+import * as SecureStore from 'expo-secure-store';
+import { EDIT_PROFILE_SCHEMA } from "../utils/formikValidation";
 import { colors } from "../Theme/theme";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserData } from "../movixerSlice";
+import { ThemeContext } from "../Context/ThemeContext";
 
 const EditProfileScreen = ({ navigation }) =>{
+    const {theme} = useContext(ThemeContext)
+    let activeColors = colors[theme.mode]
 
-    const [isWomen, setIsWomen] = useState(false)
-    const [isYes, setIsYes] = useState(false)
-
-    const handleWomenChange = () => {
-        setIsWomen(true);
-    };
+    const dispatch = useDispatch();
+    const data = useSelector((state) => state.movie.data)
     
-    const handleMenChange = () => {
-        setIsWomen(false);
-    };
+    useEffect(() => {
+        getStoreData();
+    }, [])
 
-    const handleYesChange = () => {
-        setIsYes(true);
-    };
-    
-    const handleNoChange = () => {
-        setIsYes(false);
-    };
 
     const formik = useFormik({
         initialValues: {
             mobileNumber: '',
             email: '',
             fullname: '',
-            birthday: '',
         },
-        validationSchema: REGISTRATION_SCHEMA, 
-        onSubmit: (values) =>{
-            console.log(values);
+        validationSchema: EDIT_PROFILE_SCHEMA, 
+        onSubmit: async(values) =>{
+            try {
+                await SecureStore.setItemAsync('email', values.email)
+                await SecureStore.setItemAsync('mobileNumber', values.mobileNumber)
+                await SecureStore.setItemAsync('fullname', values.fullname)
+                let updatedData =  dispatch(updateUserData({id : data.id, ...values}));
+                console.log(updatedData);
+                navigation.navigate('Profile');
+            } catch (error) {
+                console.error('Error updating user data:', error);
+            }
         }
     });
 
+    const getStoreData = async () => {
+        try {
+            let email = await SecureStore.getItemAsync('email');
+            let fullname = await SecureStore.getItemAsync('fullname');
+            let mobileNumber = await SecureStore.getItemAsync('mobileNumber');
+            formik.setFieldValue('email', email);
+            formik.setFieldValue('fullname', fullname);
+            formik.setFieldValue('mobileNumber', mobileNumber);
+        } catch (error) {
+            console.error('Error retrieving data from SecureStore:', error);
+        }
+    }
+
     return(
         <ScrollView>
-            <View style={style.container}>
+            <View style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                backgroundColor: activeColors.bg
+            }}>
 
                 <View style={style.headerContain}> 
                     <TouchableOpacity onPress={() => navigation.navigate('Account')}>
-                        <AntDesign name="closecircle" size={24} color="#FFAF45" style={style.iconCancel} />
+                        <AntDesign name="closecircle" size={24} color={activeColors.yellow} style={style.iconCancel} />
                     </TouchableOpacity>
-                    <Text style={style.title}>Edit Profile</Text>
+                    <Text style={{
+                        fontSize: 30,
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        color: activeColors.font
+                    }}>Edit Profile</Text>
                 </View>
 
-                <Ionicons name="person-circle-outline" size={90} color="grey" style={style.profilePic}/>
+                <Ionicons name="person-circle-outline" size={90} color={activeColors.primary} style={style.profilePic}/>
                 <Text style={style.addPhoto}>Add Photo</Text>
 
 
                 <View style={style.inputContainer}>
 
-                    <Text style={{fontSize: 18}}>Mobile Number</Text>
+                    <Text style={{fontSize: 18, color: activeColors.font}}>Mobile Number</Text>
                     <TextInput
                         value={formik.values.mobileNumber}
+                        placeholder="Add Mobile Number"
+                        placeholderTextColor={activeColors.font}
                         onChangeText={formik.handleChange('mobileNumber')}
-                        placeholder="Add Mobile Number "
-                        style={[style.input, formik.errors.mobileNumber ? style.errorBorder : '']}
+                        style={[{
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            padding: 5,
+                            marginTop: 8,
+                            paddingLeft: 20,
+                            borderColor: activeColors.font,
+                            color: activeColors.font
+                        }, formik.errors.mobileNumber ? style.errorBorder : '']}
                     />
-                    {formik.errors.mobileNumber && <Text style={{color: 'red',marginBottom: 20}}>{formik.errors.mobileNumber}</Text>}
+                    {formik.errors.mobileNumber && <Text style={{color: 'red',marginBottom: 10}}>{formik.errors.mobileNumber}</Text>}
 
-                    <Text style={{fontSize: 18, marginTop: 10}}>Email Address</Text>
+                    <Text style={{fontSize: 18, marginTop: 10, color: activeColors.font}}>Email Address</Text>
                     <TextInput
                         placeholder="email"
+                        placeholderTextColor={activeColors.font}
                         value={formik.values.email}
                         onChangeText={formik.handleChange('email')}
-                        style={[style.input, formik.errors.email ? style.errorBorder : '']}
+                        style={[{
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            padding: 5,
+                            marginTop: 8,
+                            paddingLeft: 20,
+                            borderColor: activeColors.font,
+                            color: activeColors.font
+                        }, formik.errors.email ? style.errorBorder : '']}
                     />
-                    {formik.errors.email && <Text style={{color: 'red',marginBottom: 20}}>{formik.errors.email}</Text>}
+                    {formik.errors.email && <Text style={{color: 'red',marginBottom: 10}}>{formik.errors.email}</Text>}
 
-                    <Text style={{fontSize: 18, marginTop: 20, fontWeight: "bold"}}>Personal Details</Text>
-
-                    <Text style={{fontSize: 15, marginTop: 20}}>Full Name</Text>
+                    <Text style={{fontSize: 18, marginTop: 10, color: activeColors.font}}>Full Name</Text>
                     <TextInput
                         placeholder="Enter full name here"
+                        placeholderTextColor={activeColors.font}
                         value={formik.values.fullname}
                         onChangeText={formik.handleChange('fullname')}
-                        style={[style.input, formik.errors.fullname ? style.errorBorder : '']}
+                        style={[{
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            padding: 5,
+                            marginTop: 8,
+                            paddingLeft: 20,
+                            borderColor: activeColors.font,
+                            color: activeColors.font
+                        }, formik.errors.fullname ? style.errorBorder : '']}
                     />
                     {formik.errors.fullname && <Text style={{color: 'red', marginBottom: 10}}>{formik.errors.fullname}</Text>}
-                    
-                    <Text style={{fontSize: 15, marginTop: 15}}>Birthday (Optional)</Text>
-                    <TextInput
-                        value={formik.values.birthday}
-                        onChangeText={formik.handleChange('birthday')}
-                        placeholder="DD/MM/YY"
-                        style={[style.input, formik.errors.birthday ? style.errorBorder : '']}
-                    />
-                    {formik.errors.birthday && <Text style={{color: 'red', marginBottom: 10}}>{formik.errors.birthday}</Text>}
-                    
-                    <Text style={{ fontSize: 15, marginTop: 15 }}>Identity (Optional)</Text>
-                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <View style={isWomen ? [style.identity, style.selected] : style.identity}>
-                            <TouchableOpacity onPress={handleWomenChange}>
-                                <Text style={{ textAlign: 'center' }}>Women</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={!isWomen ? [style.identity, style.selected] : style.identity}>
-                            <TouchableOpacity onPress={handleMenChange}>
-                                <Text style={{ textAlign: 'center' }}>Men</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <Text style={{fontSize: 15, marginTop: 20}}>Married (Optional)</Text>
-                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <View style={isYes ? [style.identity, style.selected] : style.identity}>
-                            <TouchableOpacity onPress={handleYesChange}>
-                                <Text style={{ textAlign: 'center' }}>Yes</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={!isYes ? [style.identity, style.selected] : style.identity}>
-                            <TouchableOpacity onPress={handleNoChange}>
-                                <Text style={{ textAlign: 'center' }}>No</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                     
                 </View>
 
                 <TouchableOpacity  onPress={formik.handleSubmit}>
-                    <Text style={style.saveBtn}>Save Changes</Text>
+                    <Text style={{
+                        marginTop: 50,
+                        width: 200,
+                        fontSize: 17,
+                        backgroundColor: activeColors.yellow,
+                        borderRadius: 10,
+                        textAlign: 'center',
+                        paddingVertical: 6,
+                        marginBottom: 320,
+                        justifyContent: 'center'
+                    }}>Save Changes</Text>
                 </TouchableOpacity>
 
             </View>
@@ -136,10 +159,6 @@ const EditProfileScreen = ({ navigation }) =>{
 }
 
 const style = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center'  
-    },
     headerContain: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -149,13 +168,8 @@ const style = StyleSheet.create({
     iconCancel: {
         marginRight: 70
     },
-    title: {
-        fontSize: 30,
-        textAlign: 'center',
-        fontWeight: 'bold'
-    },
     profilePic: {
-        marginTop: 10,
+        marginTop: 30,
     },
     addPhoto: {
         marginTop: 5,
@@ -166,26 +180,8 @@ const style = StyleSheet.create({
         width: '90%',
         marginTop: 10
     },
-    input: {
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 5,
-        marginTop: 8,
-        paddingLeft: 20
-    },
     errorBorder: {
         borderColor: colors.error
-    },
-    saveBtn: {
-        marginTop: 50,
-        width: 200,
-        fontSize: 17,
-        backgroundColor: colors.yellow,
-        borderRadius: 10,
-        textAlign: 'center',
-        paddingVertical: 6,
-        marginBottom: 50,
-        justifyContent: 'center'
     },
     identity: {
         borderWidth: 1,
@@ -199,4 +195,9 @@ const style = StyleSheet.create({
     }
 })
 
-export default EditProfileScreen
+export default EditProfileScreen;
+
+
+
+
+

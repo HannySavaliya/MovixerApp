@@ -2,9 +2,14 @@ import {StyleSheet,Text,View,SafeAreaView,Pressable,Dimensions,Image, TouchableO
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../Theme/theme";
+import { useContext } from "react";
+import { ThemeContext } from "../Context/ThemeContext";
   
 const MovieCard = ({ item }) => {
   const navigation = useNavigation();
+  const {theme} = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
+
   return (
     <SafeAreaView>
       <Pressable style={style.cardContain}>
@@ -16,7 +21,10 @@ const MovieCard = ({ item }) => {
         />
 
         <View>
-          <Text style={style.title}>{item.title.substr(0, 20)}</Text>
+          <Text 
+            style={{marginTop: 6, fontSize: 15, fontWeight: "400", color: activeColors.font}}>
+              {item.title.substr(0, 20)}
+          </Text>
           <Text style={style.language}>U/A • {item.original_language}</Text>
         </View>
 
@@ -51,11 +59,6 @@ const style = StyleSheet.create({
     height: "70%",
     resizeMode: "contain",
     borderRadius: 7,
-  },
-  title: {
-    marginTop: 6, 
-    fontSize: 15, 
-    fontWeight: "400" 
   },
   language: {
     marginTop: 4,
