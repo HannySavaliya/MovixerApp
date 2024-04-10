@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
 import { PlaceProvider } from './PlaceContext'; 
 import Navigation from './navigation/Navigation';
+
 
 export default function App() {
   return (
@@ -9,5 +9,3 @@ export default function App() {
     </PlaceProvider>
   );
 }
-
-const styles = StyleSheet.create({});

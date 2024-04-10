@@ -14,6 +14,7 @@ const Calendar = ({ selected, onSelectedDate }) => {
     }
     setDates(myDates);
   };
+  console.log(selected);
 
   useEffect(() => {
     getDates();
@@ -27,7 +28,7 @@ const Calendar = ({ selected, onSelectedDate }) => {
             key={index}
             date={date}
             selected={selected}
-            onSelectDate={onSelectedDate} // Ensure onSelectedDate is a function
+            onSelectDate={onSelectedDate} 
           />
         ))}
       </ScrollView>

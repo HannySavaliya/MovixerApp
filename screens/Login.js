@@ -64,7 +64,6 @@ const Login = ({ navigation }) => {
             <TouchableOpacity style={style.button} onPress={formik.handleSubmit}>
                 <Text style={style.buttonText}>Login</Text>
             </TouchableOpacity>
-
             <View style={style.options}>
                 <Text style={style.text}>Don't have an account?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')}>

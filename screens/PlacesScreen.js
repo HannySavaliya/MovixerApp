@@ -112,7 +112,7 @@ const PlacesScreen = () => {
                     <Pressable onPress={() => selectCity(item.place)}   style={{ marginVertical: 10, marginHorizontal: 20 }}>
                         <ImageBackground
                             imageStyle={{ borderRadius: 8 }}
-                            style={{ width: 160, height: 100, opacity: 0.8 }}
+                            style={{ width: 160, height: 100, opacity: 0.8  }}
                             source={{ uri: item.image }}
                         >
                             {selectedCity === item.place && (

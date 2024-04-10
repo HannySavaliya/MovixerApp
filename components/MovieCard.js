@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { colors } from "../Theme/theme";
   
 const MovieCard = ({ item }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
   return (
     <SafeAreaView>
       <Pressable style={style.cardContain}>
@@ -22,8 +22,8 @@ const MovieCard = ({ item }) => {
 
         <TouchableOpacity
           onPress={() => navigation.navigate("Movie",{
-            title:item.title,
-            // movieId:item._id
+            title: item.title,
+            movieId: item.id
           })}
           style={style.button}
         >

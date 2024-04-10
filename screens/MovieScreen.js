@@ -5,10 +5,8 @@ import Calendar from "../components/Calendar";
 import moment from "moment";
 import { PlaceContext } from "../PlaceContext";
 
-const MovieScreen = () => {
-  const navigation = useNavigation();
+const MovieScreen = ({route, navigation}) => {
   const { selectedCity } = useContext(PlaceContext);
-  const route = useRoute();
   const today = moment().format("YYYY-MM-DD");
   const [selectedDate, setSelectedDate] = useState(today);
   const [selectedMall, setSelectedMall] = useState(null);
@@ -707,7 +705,7 @@ const MovieScreen = () => {
               onPress={() => setSelectedMall(mall)}
               style={{ marginHorizontal: 20, marginVertical: 10 }}
             >
-              <Text style={styles.mallName}>{mall.name}</Text>
+              <Text style={style.mallName}>{mall.name}</Text>
               {selectedMall && selectedMall.id === mall.id && (
                 <FlatList
                 numColumns={3}
@@ -717,12 +715,13 @@ const MovieScreen = () => {
                       onPress={() => navigation.navigate("Theater" , {
                         name : route.params.title,
                         selectedDate : selectedDate,
-                        mall:mall,
-                        showtime : item
-
+                        mall: mall,
+                        showtime : item,
+                        title : route.params.title,
+                        movieId : route.params.id
                       })}
-                    style={styles.mallTime} >
-                      <Text style={styles.timeFont}>{item}</Text>
+                    style={style.mallTime} >
+                      <Text style={style.timeFont}>{item}</Text>
                     </Pressable>
                   )}
                   keyExtractor={(item, index) => index.toString()}
@@ -737,7 +736,7 @@ const MovieScreen = () => {
 
 export default MovieScreen;
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   mallName: {
     fontSize: 15,
     fontWeight: '500',

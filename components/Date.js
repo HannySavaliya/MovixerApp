@@ -5,19 +5,19 @@ import moment from "moment";
 const DateComponent = ({ date, selected, onSelectDate }) => {
   const day = moment(date).format("ddd");
   const dayNumber = moment(date).format("D");
-  const fullDate = moment(date).format("YYYY-MM-DD");
+  const fullDate = moment(date).format("DD-MM-YYYY");
 
   return (
     <Pressable
-      onPress={() => onSelectDate(fullDate)} // Ensure onSelectDate is a function
+      onPress={() => onSelectDate(fullDate)} 
       style={[
-        styles.container,
+        style.container,
         selected === fullDate && { backgroundColor: "#FFD700" },
       ]}
     >
       <Text
         style={[
-          styles.day,
+          style.day,
           selected === fullDate && { color: "white", fontWeight: "500" },
         ]}
       >
@@ -26,7 +26,7 @@ const DateComponent = ({ date, selected, onSelectDate }) => {
       <View style={{ height: 10 }} />
       <Text
         style={[
-          styles.number,
+          style.number,
           selected === fullDate && { color: "white", fontWeight: "500" },
         ]}
       >
@@ -38,7 +38,7 @@ const DateComponent = ({ date, selected, onSelectDate }) => {
 
 export default DateComponent;
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     backgroundColor: "#E0E0E0",
     borderRadius: 10,

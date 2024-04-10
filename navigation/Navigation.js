@@ -1,17 +1,25 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import { AntDesign, Octicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
+import * as React from 'react';
+import { AntDesign, Octicons } from '@expo/vector-icons';
+import HomeScreen from '../screens/HomeScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 import SplashScreen from '../screens/SplashScreen';
 import PlacesScreen from '../screens/PlacesScreen';
-import AccountScreen from '../screens/AccountScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
 import Signup from '../screens/Signup';
+import AccountScreen from '../screens/AccountScreen';
 import Login from '../screens/Login';
+import ProfileScreen from '../screens/ProfileScreen';
+import MovieScreen from '../screens/MovieScreen';
+import TheaterScreen from '../screens/TheaterScreen';
+import TicketScreen from '../screens/TicketScreen';
+import PaymentScreen from '../screens/Paymentscreen';
+import PaymentCardScreen from '../screens/PaymentCardScreen';
+import GooglePayScreen from '../screens/GooglePayScreen';
+import Success from '../screens/PaymentSuccess';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,6 +63,14 @@ function Navigation() {
                     headerShown: false
                 }}/>
                 <Stack.Screen name="Places" component={PlacesScreen}/>
+                <Stack.Screen name="Movie" component={MovieScreen}/>
+                <Stack.Screen name="Theater" component={TheaterScreen} />
+                <Stack.Screen name="Payment" component={PaymentScreen} />
+                <Stack.Screen name="PaymentCardScreen" component={PaymentCardScreen} />
+                <Stack.Screen name="GooglePayScreen" component={GooglePayScreen} />
+                <Stack.Screen name="Success" component={Success} />
+                <Stack.Screen name="Ticket" component={TicketScreen} />
+                
                 <Stack.Screen name="Account" component={AccountScreen} options={{
                     headerShown: false
                 }}/>
@@ -76,3 +92,4 @@ function Navigation() {
 }
 
 export default Navigation
+

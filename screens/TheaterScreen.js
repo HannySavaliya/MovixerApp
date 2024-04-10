@@ -1,137 +1,173 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { StyleSheet, View, Text, Pressable, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Pressable, ScrollView, FlatList,Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 const TheaterScreen = () => {
-    const navigation = useNavigation();
-    const route = useRoute();
-    const [selectedSeats, setSelectedSeats] = useState({});
-    const [rows, setRows] = useState([
-        {
-            row: 'A',
-            seats: [
-                { seat: '1', bookingStatus: false },
-                { seat: '2', bookingStatus: false },
-                { seat: '3', bookingStatus: false },
-                { seat: '4', bookingStatus: false },
-                { seat: '5', bookingStatus: false },
-                { seat: '6', bookingStatus: false },
-                { seat: '7', bookingStatus: false },
-            ],
-        },
-        {
-            row: 'B',
-            seats: [
-                { seat: '1', bookingStatus: false },
-                { seat: '2', bookingStatus: false },
-                { seat: '3', bookingStatus: false },
-                { seat: '4', bookingStatus: false },
-                { seat: '5', bookingStatus: false },
-                { seat: '6', bookingStatus: false },
-                { seat: '7', bookingStatus: false },
-            ],
-        },
-        {
-            row: 'C',
-            seats: [
-                { seat: '1', bookingStatus: false },
-                { seat: '2', bookingStatus: false },
-                { seat: '3', bookingStatus: false },
-                { seat: '4', bookingStatus: false },
-                { seat: '5', bookingStatus: false },
-                { seat: '6', bookingStatus: false },
-                { seat: '7', bookingStatus: false },
-            ],
-        },
-        {
-            row: 'D',
-            seats: [
-                { seat: '1', bookingStatus: false },
-                { seat: '2', bookingStatus: false },
-                { seat: '3', bookingStatus: false },
-                { seat: '4', bookingStatus: false },
-                { seat: '5', bookingStatus: false },
-                { seat: '6', bookingStatus: false },
-                { seat: '7', bookingStatus: false },
-            ],
-        },
-        {
-            row: 'E',
-            seats: [
-                { seat: '1', bookingStatus: false },
-                { seat: '2', bookingStatus: false },
-                { seat: '3', bookingStatus: false },
-                { seat: '4', bookingStatus: false },
-                { seat: '5', bookingStatus: false },
-                { seat: '6', bookingStatus: false },
-                { seat: '7', bookingStatus: false },
-            ],
-        },
-    ]);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [rows, setRows] = useState([
+    {
+      row: 'A',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    {
+      row: 'B',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    {
+      row: 'C',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    {
+      row: 'D',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    {
+      row: 'E',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    {
+      row: 'F',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    {
+      row: 'G',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    {
+      row: 'H',
+      seats: [
+        { seat: '1', bookingStatus: false },
+        { seat: '2', bookingStatus: false },
+        { seat: '3', bookingStatus: false },
+        { seat: '4', bookingStatus: false },
+        { seat: '5', bookingStatus: false },
+        { seat: '6', bookingStatus: false },
+        { seat: '7', bookingStatus: false },
+      ],
+    },
+    
 
-    const mallName = route.params?.mall?.name || '';
+  ]);
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <Pressable
-                    style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Ionicons name="arrow-back" size={24} color="black" />
-                    <Text>{mallName}</Text>
-                </Pressable>
-            ),
-            headerStyle: {
-                backgroundColor: '#F5F5F5',
-                shadowColor: 'transparent',
-                shadowOpacity: 0.3,
-                shadowOffset: { width: -1, height: 1 },
-                shadowRadius: 3,
-            },
-        });
-    }, [navigation, mallName]);
+  const {selectedDate, showtime, movieId, title} = route.params
+  const mall = route.params?.mall?.name || '';
+  console.log(mall);
 
-    const handleSeatPress = (row, seat) => {
-        const isSelected = Object.values(selectedSeats).some(
-            (selectedSeat) => selectedSeat.row === row && selectedSeat.seat === seat
-        );
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Pressable
+          style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+          <Text>{mall}</Text>
+        </Pressable>
+      ),
+      headerStyle: {
+        backgroundColor: '#F5F5F5',
+        shadowColor: 'transparent',
+        shadowOpacity: 0.3,
+        shadowOffset: { width: -1, height: 1 },
+        shadowRadius: 3,
+      },
+    });
+  }, [navigation, mall]);
+  
+  const handlePayPress = () => {
+    if (selectedSeats.length === 0) {
+      Alert.alert('Error', 'Please select at least one seat.');
+    } else {
+      const amount = selectedSeats.length * 100;
+      navigation.navigate('Payment', {
+        selectedSeats,
+        amount,
+        mall,
+        selectedDate,
+        showtime,
+        movieId,
+        title,
+        row: rows.row,
+      });
+    }
+  };
+  const handleSeatPress = (row, seat) => {
+    const isSelected = selectedSeats.some(
+      (selectedSeat) => selectedSeat.row === row && selectedSeat.seat === seat
+    );
 
-        if (isSelected) {
-            setSelectedSeats((prevState) => {
-                const updatedState = { ...prevState };
-                delete updatedState[`${row}-${seat}`];
-                return updatedState;
-            });
-        } else {
-            setSelectedSeats((prevState) => ({
-                ...prevState,
-                [`${row}-${seat}`]: { row, seat },
-            }));
-        }
-    };
+    if (isSelected) {
+      setSelectedSeats((prevState) =>
+        prevState.filter(
+          (selectedSeat) =>
+            selectedSeat.row!== row || selectedSeat.seat!== seat
+        )
+      );
+    } else {
+      setSelectedSeats((prevState) => [...prevState, { row, seat }]);
+    }
+  };
+  console.log(selectedSeats.join(" "));
 
-    const toggleSelectedStyle = (row, seat) => {
-        const isSelected = Object.values(selectedSeats).some(
-            (selectedSeat) => selectedSeat.row === row && selectedSeat.seat === seat
-        );
-
-        if (isSelected) {
-            return styles.selectedSeatYellow;
-        } else if (seat.bookingStatus === 'disabled') {
-            return styles.selectedSeat;
-        } else {
-            return null;
-        }
-    };
-
-    const handlePayPress = () => {
-        // Calculate total amount
-        const amount = Object.values(selectedSeats).length * 100;
-        // Navigate to payment screen with selected seats data and total amount
-        navigation.navigate('Payment', { selectedSeats, amount });
-    };
 
     const renderSeats = ({ item }) => {
         return (
@@ -144,7 +180,7 @@ const TheaterScreen = () => {
                         {item.seats.map((seat) => (
                             <Pressable
                                 key={`${item.row}-${seat.seat}`}
-                                style={[styles.seat, toggleSelectedStyle(item.row, seat)]}
+                                style={[style.seat]}
                                 disabled={seat.bookingStatus === 'disabled'}
                                 onPress={() => handleSeatPress(item.row, seat.seat)}
                             >
@@ -152,6 +188,7 @@ const TheaterScreen = () => {
                             </Pressable>
                         ))}
                     </View>
+                    
                 </ScrollView>
             </View>
         );
@@ -160,31 +197,31 @@ const TheaterScreen = () => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
-                <Text style={styles.text}>SCREEN THIS WAY</Text>
-                <Text style={styles.classic}>CLASSIC {240}</Text>
+                <Text style={style.text}>SCREEN THIS WAY</Text>
+                <Text style={style.classic}>CLASSIC {100}</Text>
                 <FlatList
                     data={rows}
                     renderItem={renderSeats}
                     keyExtractor={(item) => item.row}
                 />
-                <View style={styles.legendContainer}>
-                    <View>
-                        <FontAwesome name="square" size={24} color="#ffc40c" />
-                        <Text style={styles.legendText}>Selected</Text>
+                <View style={style.legendContainer}>
+                    <View style={{alignItems: 'center'}}>
+                        <FontAwesome name="square" size={26} color="#ffc40c" />
+                        <Text style={style.legendText}>Selected</Text>
                     </View>
-                    <View>
+                    <View style={{alignItems: 'center'}}>
                         <FontAwesome name="square" size={24} color="white" />
-                        <Text style={styles.legendText}>Vacant</Text>
+                        <Text style={style.legendText}>Vacant</Text>
                     </View>
-                    <View>
+                    <View style={{alignItems: 'center'}}>
                         <FontAwesome name="square" size={24} color="grey" />
-                        <Text style={styles.legendText}>Booked</Text>
+                        <Text style={style.legendText}>Booked</Text>
                     </View>
                 </View>
                 <Pressable
                     style={{
-                        marginTop: 50,
-                        backgroundColor: '#E0E0E0',
+                        marginTop: 65,
+                        backgroundColor: '#ffc40c',
                         padding: 10,
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -198,12 +235,12 @@ const TheaterScreen = () => {
             </View>
         </View>
     );
-    
+
 };
 
 export default TheaterScreen;
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
     text: {
         margin: 10,
         textAlign: 'center',
@@ -238,15 +275,15 @@ const styles = StyleSheet.create({
     legendContainer: {
         backgroundColor: '#D8D8D8',
         padding: 10,
-        marginTop: 25,
+        marginTop: 44,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly'
+       
     },
     legendText: {
         textAlign: 'center',
     },
 });
-
 
 
