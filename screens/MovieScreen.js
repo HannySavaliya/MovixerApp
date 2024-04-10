@@ -3,7 +3,7 @@ import React, { useContext, useLayoutEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Calendar from "../components/Calendar";
 import moment from "moment";
-import { PlaceContext } from "../PlaceContext";
+import { PlaceContext } from "../Context/PlaceContext";
 
 const MovieScreen = ({route, navigation}) => {
   const { selectedCity } = useContext(PlaceContext);

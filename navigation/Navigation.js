@@ -20,21 +20,41 @@ import PaymentCardScreen from '../screens/PaymentCardScreen';
 import GooglePayScreen from '../screens/GooglePayScreen';
 import Success from '../screens/PaymentSuccess';
 
+import { colors } from '../Theme/theme';
+import AuthFlow from '../Authentication/AuthFlow';
+import { ThemeContext } from '../Context/ThemeContext';
+import { StatusBar } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomePage() {
+
+    const {theme} = React.useContext(ThemeContext)
+    let activeColors = colors[theme.mode]
+
     return(
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{
+            tabBarActiveTintColor: activeColors.font,
+            tabBarInactiveTintColor: activeColors.primary,
+            tabBarStyle: {
+                backgroundColor: activeColors.bg,
+                color: activeColors.font
+            }
+        }}>
             <Tab.Screen
-                name="Movixer"
+                name="Home"
                 component={HomeScreen}
                 options={{
-                    // title: 'Home page',
                     tabBarIcon: ({size, color}) => (
                         <AntDesign name="home" size={size} color={color} />
-                    )
+                    ),
+                    headerStyle: {
+                        backgroundColor: activeColors.bg, 
+                    },
+                    headerTitleStyle: {
+                        color: activeColors.font
+                    }
                 }}
             />
             <Tab.Screen
@@ -44,7 +64,7 @@ function HomePage() {
                     headerShown: false,
                     tabBarIcon: ({size, color}) => (
                         <Octicons name="person" size={size} color={color} />
-                    )
+                    ),
                 }}
             />
         </Tab.Navigator>
@@ -53,24 +73,27 @@ function HomePage() {
 
 
 function Navigation() {
+    const {theme} = React.useContext(ThemeContext)
+    let activeColors = colors[theme.mode]
+
     return(
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName='HomeScreen' screenOptions={{
+                
+            }}>
                 <Stack.Screen name="SplashScreen" component={SplashScreen} options={{
-                    headerShown: false
+                    headerShown: false,
                 }}/>
                 <Stack.Screen name="HomeScreen" component={HomePage} options={{
-                    headerShown: false
+                    headerShown: false,
+                    
                 }}/>
-                <Stack.Screen name="Places" component={PlacesScreen}/>
-                <Stack.Screen name="Movie" component={MovieScreen}/>
-                <Stack.Screen name="Theater" component={TheaterScreen} />
-                <Stack.Screen name="Payment" component={PaymentScreen} />
-                <Stack.Screen name="PaymentCardScreen" component={PaymentCardScreen} />
-                <Stack.Screen name="GooglePayScreen" component={GooglePayScreen} />
-                <Stack.Screen name="Success" component={Success} />
-                <Stack.Screen name="Ticket" component={TicketScreen} />
-                
+                <Stack.Screen name="Places" component={PlacesScreen} options={{
+                    headerStyle: {
+                        backgroundColor: activeColors.bg, 
+                    }
+                }}/>
+                <Stack.Screen name="AuthFlow" component={AuthFlow}/>
                 <Stack.Screen name="Account" component={AccountScreen} options={{
                     headerShown: false
                 }}/>
@@ -86,8 +109,18 @@ function Navigation() {
                 <Stack.Screen name="Login" component={Login} options={{
                     headerShown: false
                 }}/>
+                <Stack.Screen name="Movie" component={MovieScreen}/>
+                <Stack.Screen name="Theater" component={TheaterScreen} />
+                <Stack.Screen name="Payment" component={PaymentScreen} />
+                <Stack.Screen name="PaymentCardScreen" component={PaymentCardScreen} />
+                <Stack.Screen name="GooglePayScreen" component={GooglePayScreen} />
+                <Stack.Screen name="Success" component={Success} />
+                <Stack.Screen name="Ticket" component={TicketScreen} />
             </Stack.Navigator>
+
+            <StatusBar style={theme.mode === "dark" ? "light" : "dark"}/>
         </NavigationContainer>
+        
     )
 }
 

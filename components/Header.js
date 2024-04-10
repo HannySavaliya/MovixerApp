@@ -1,8 +1,11 @@
 import { ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { colors } from '../Theme/theme'
+import { ThemeContext } from '../Context/ThemeContext'
 
 const Header = () => {
+    const {theme} = useContext(ThemeContext)
+    let activeColors = colors[theme.mode]
     return (
         <View style={{ marginBottom: 55 }}>
             <ImageBackground
@@ -11,11 +14,33 @@ const Header = () => {
                     uri: "https://originserver-static1-uat.pvrcinemas.com/newweb/movies/thumb/374x226/HO00022376.jpg?v=4",
                 }}
             >
-                <Pressable style={style.main}>
+                <Pressable style={{
+                    height: 90, 
+                    backgroundColor: activeColors.bg, 
+                    borderColor: activeColors.primary,
+                    borderWidth: 1,
+                    padding: 10, 
+                    borderRadius: 5, 
+                    width: '90%', 
+                    top: 160, 
+                    marginLeft: 'auto', 
+                    marginRight: 'auto'
+                }}>
                     <View style={style.headerContain}>
                         <View>
-                            <Text style={style.text1}>Releasing in 1 Day</Text>
-                            <Text style={style.text2}>CUSTODY</Text>
+                            <Text style={{
+                                fontSize:15,
+                                fontWeight:'500',
+                                color: activeColors.font
+                            }}>
+                                Releasing in 1 Day
+                            </Text>
+                            <Text style={{
+                                 marginVertical : 5, 
+                                 fontSize : 16, 
+                                 fontWeight : "700",
+                                 color: activeColors.font
+                            }}>CUSTODY</Text>
                             <Text style={style.text3}>U.A * TELUGU</Text>
                         </View>
                         <TouchableOpacity>
@@ -35,29 +60,10 @@ const style = StyleSheet.create({
         width: 420, 
         resizeMode: "contain"
     },
-    main: {
-        height: 90, 
-        backgroundColor: colors.bg, 
-        padding: 10, 
-        borderRadius: 5, 
-        width: '90%', 
-        top: 160, 
-        marginLeft: 'auto', 
-        marginRight: 'auto'
-    },
     headerContain: {
         flexDirection : 'row',
         alignItems : 'center',
         justifyContent : 'space-between'
-    },
-    text1: {
-        fontSize:15,
-        fontWeight:'500'
-    },
-    text2: {
-        marginVertical : 5, 
-        fontSize : 16, 
-        fontWeight : "700"
     },
     text3: {
         fontSize:15,
@@ -70,4 +76,4 @@ const style = StyleSheet.create({
         borderRadius : 6, 
         marginRight : 10
     }
-}) 
+})

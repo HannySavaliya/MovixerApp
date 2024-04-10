@@ -1,102 +1,172 @@
 import { useFormik } from "formik";
-import { TextInput, View, StyleSheet, Text, TouchableOpacity  } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from "react-redux";
+import { addUsersData } from "../movixerSlice";
+import * as SecureStore from 'expo-secure-store';
 import { colors } from "../Theme/theme";
+import { REGISTRATION_SCHEMA } from "../utils/formikValidation";
+import { useContext } from "react";
+import { ThemeContext } from "../Context/ThemeContext";
 
 const Signup = ({ navigation }) => {
+    const {theme} = useContext(ThemeContext)
+    let activeColors = colors[theme.mode]
+    const dispatch = useDispatch();
+    const loading = useSelector((state) => state.movie.loading);
+
     const formik = useFormik({
         initialValues: {
-            firstname: '',
-            lastname: '',
+            fullname: '',
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: '',
+            mobileNumber: '',
         },
-        validate : (values)  => {
-            const errors = {}
-            let nameRex = /[a-zA-Z]+/
-            let nameRex1  = /[a-zA-Z0-9@.]+/
-            if(!values.firstname) {
-            errors.firstname = "Please Enter FirstName"
-            }else if (!nameRex.test(values.firstname)) {
-            errors.firstname = "Please Enter Valid Character"
-            }
-            if(!values.lastname) {
-            errors.lastname = "Please Enter LastName"
-            }else if (!nameRex.test(values.lastname)) {
-            errors.lastname = "Please Enter Valid Character"
-            }
-            if(!values.email) {
-            errors.email = "Please Enter Valid E-mail "
-            }else if (!nameRex1.test(values.email)) {
-            errors.email = "Please Enter Valid E-mail"
-            }
-            if(!values.password) {
-            errors.password = "Please Enter Correct Password"
-            }
-            return errors
-        },
-        onSubmit: (values) => {
-            console.log(values);
-           
+        validationSchema: REGISTRATION_SCHEMA, 
+        onSubmit: async(values) => {
+            await SecureStore.setItemAsync('email', values.email)
+            await SecureStore.setItemAsync('confirmPassword', values.confirmPassword)
+            await SecureStore.setItemAsync('password', values.password)
+            await SecureStore.setItemAsync('fullname', values.fullname)
+            await SecureStore.setItemAsync('mobileNumber', values.mobileNumber)
+            dispatch(addUsersData(values)).then(data => {
+                console.log("===data===");
+                console.log(data);
+            })
+            navigation.navigate('Home')
         }
-    })
-    console.log(formik.values);
+    });
+
     return (
-        <View style={style.container}>
+        <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            backgroundColor: activeColors.bg
+        }}>
             <Ionicons 
                 name="arrow-back-outline" 
                 size={24} 
-                color="black" 
+                color={activeColors.font} 
                 onPress={() => navigation.navigate('SplashScreen')}
-                style={style.arrowBack}
+                style={styles.arrowBack}
             />
 
-            <Text style={style.title}>Sign up</Text>
+            <Text style={{
+                fontSize: 36,
+                fontWeight: 'bold',
+                marginTop: 50,
+                color: activeColors.font
+            }}>
+                Sign up
+            </Text>
 
-            <View style={style.inputContainer}>
+            <View style={styles.inputContainer}>
                 <TextInput 
-                    value={formik.values.firstname}
-                    placeholder="Firstname...."
-                    onChangeText={formik.handleChange('firstname')}
-                    style={[style.input , formik.errors.firstname ? style.errorborder : '']}
+                    value={formik.values.fullname}
+                    placeholder="Full Name"
+                    placeholderTextColor={activeColors.primary}
+                    onChangeText={formik.handleChange('fullname')}
+                    style={[{
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: 10,
+                        marginBottom: 20,
+                        width: '100%',
+                        borderColor: activeColors.font,
+                        color: activeColors.font
+                    }, formik.errors.fullname ? styles.errorBorder : null]}
                 />
-                {formik.errors.firstname && <Text style={{color : 'red' , marginBottom : 20}}>{formik.errors.firstname}</Text>}
+                {formik.errors.fullname && <Text style={styles.errorText}>{formik.errors.fullname}</Text>}
 
                 <TextInput
-                    value={formik.values.lastname}
-                    placeholder="Lastname...."
-                    onChangeText={formik.handleChange('lastname')}
-                    style={[style.input , formik.errors.lastname ? style.errorborder : '']}
-                />
-                {formik.errors.lastname && <Text style={{color : 'red' , marginBottom : 20}}>{formik.errors.lastname}</Text>}
-
-                <TextInput
-                    style={[style.input , formik.errors.email ? style.errorborder : '']}
                     value={formik.values.email}
-                    placeholder="Email...."
+                    placeholder="Email"
+                    placeholderTextColor={activeColors.primary}
                     onChangeText={formik.handleChange('email')}
+                    style={[{
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: 10,
+                        marginBottom: 20,
+                        width: '100%',
+                        borderColor: activeColors.font,
+                        color: activeColors.font
+                    }, formik.errors.email ? styles.errorBorder : null]}
                 />
-                {formik.errors.email && <Text style={{color : 'red' , marginBottom : 20}}>{formik.errors.email}</Text>}
+                {formik.errors.email && <Text style={styles.errorText}>{formik.errors.email}</Text>}
 
                 <TextInput
-                    style={[style.input , formik.errors.password ? style.errorborder : '']}
                     value={formik.values.password}
-                    placeholder="Password...."
+                    placeholder="Password"
+                    placeholderTextColor={activeColors.primary}
                     onChangeText={formik.handleChange('password')}
                     secureTextEntry={true}
+                    style={[{
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: 10,
+                        marginBottom: 20,
+                        width: '100%',
+                        borderColor: activeColors.font,
+                        color: activeColors.font
+                    }, formik.errors.password ? styles.errorBorder : null]}
                 />
-                {formik.errors.password && <Text style={{color : 'red', marginBottom : 20}}>{formik.errors.password}</Text>}
+                {formik.errors.password && <Text style={styles.errorText}>{formik.errors.password}</Text>}
+
+                <TextInput
+                    value={formik.values.confirmPassword}
+                    placeholder="Confirm Password"
+                    placeholderTextColor={activeColors.primary}
+                    onChangeText={formik.handleChange('confirmPassword')}
+                    secureTextEntry={true}
+                    style={[{
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: 10,
+                        marginBottom: 20,
+                        width: '100%',
+                        borderColor: activeColors.font,
+                        color: activeColors.font
+                    }, formik.errors.confirmPassword ? styles.errorBorder : null]}
+                />
+                {formik.errors.confirmPassword && <Text style={styles.errorText}>{formik.errors.confirmPassword}</Text>}
+
+                <TextInput
+                    value={formik.values.mobileNumber}
+                    placeholder="Add Mobile Number"
+                    placeholderTextColor={activeColors.primary}
+                    onChangeText={formik.handleChange('mobileNumber')}
+                    style={[{
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: 10,
+                        marginBottom: 20,
+                        width: '100%',
+                        borderColor: activeColors.font,
+                        color: activeColors.font
+                    }, formik.errors.mobileNumber ? styles.errorBorder : null]}
+                />
+                {formik.errors.mobileNumber && <Text style={styles.errorText}>{formik.errors.mobileNumber}</Text>}
 
             </View>
-            
-            <TouchableOpacity style={style.button} onPress={() => navigation.navigate('HomeScreen')}>
-                <Text style={style.buttonText}>Sign up</Text>
+                    
+            <TouchableOpacity style={styles.button} onPress={formik.handleSubmit}>
+                <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
 
-            <View style={style.options}>
-                <Text style={style.text}>Already have an account?</Text>
+            <View style={styles.options}>
+                <Text style={styles.text}>Already have an account?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={style.login}>Login</Text>
+                    <Text style={{
+                        marginTop: 30,
+                        fontWeight: 'bold',
+                        marginLeft: 5,
+                        color: activeColors.font
+                    }}>
+                        Login
+                    </Text>
                 </TouchableOpacity>
             </View>
         
@@ -104,37 +174,14 @@ const Signup = ({ navigation }) => {
     )
 }
 
-const style = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
+const styles = StyleSheet.create({
     arrowBack: {
         marginRight: 350,
-        marginTop: 35
+        marginTop: -200
     },
-    title: {
-        fontSize: 36,
-        fontWeight: 'bold',
-        marginTop: 50,
-    },
-    // checkboxContainer: {
-    //     flexDirection: 'row',
-    //     marginBottom: 20,
-    // },
-    // checkbox: {
-    //     alignSelf: 'center',
-    // },
     inputContainer: {
         width: '85%',
         marginTop: 50
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 10,
-        marginBottom: 20,
-        width: '100%',
     },
     button: {
         backgroundColor: colors.yellow,
@@ -155,18 +202,18 @@ const style = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 30,
     },
-    login: {
-        marginTop: 30,
-        fontWeight: 'bold',
-        marginLeft: 5
-    },
     options: {
         flexDirection: 'row',
         justifyContent: 'center'
     },
-    errorborder : {
-        borderColor : colors.error
+    errorText: {
+        color: 'red',
+        marginBottom: 20,
+        marginTop: -20
+    },
+    errorBorder: {
+        borderColor: 'red'
     }
-})
+});
 
-export default Signup
+export default Signup;

@@ -1,10 +1,16 @@
 import {StyleSheet,Text,View,SafeAreaView,Pressable,Dimensions,Image, TouchableOpacity} from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../Theme/theme";
+import { ThemeContext } from "../Context/ThemeContext";
+  
+
   
 const MovieCard = ({ item }) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const {theme} = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
+
   return (
     <SafeAreaView>
       <Pressable style={style.cardContain}>

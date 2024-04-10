@@ -1,15 +1,32 @@
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Pressable, FlatList, StyleSheet, Text, View, Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import {  FlatList, Text, View, Animated, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { PlaceContext } from '../PlaceContext';
 import Header from '../components/Header'; 
 import MovieCard from '../components/MovieCard';
+import { PlaceContext } from '../Context/PlaceContext';
+import * as SecureStore from 'expo-secure-store';
+import { colors } from '../Theme/theme';
+import { ThemeContext } from '../Context/ThemeContext';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
+const HomeScreen = ({ navigation }) => {
   const { selectedCity } = useContext(PlaceContext);
   const moveAnimation = useRef(new Animated.Value(0)).current;
+
+  const {theme} = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
+
+  useEffect(() => {
+    validateUser()
+  },[])
+  
+  const validateUser = async() => {
+    let data = await SecureStore.getItemAsync('data')
+    data = JSON.parse(data)
+    if(!data){
+      navigation.navigate('Signup')
+    }
+  }
+
   const data = [
       {
         adult: false,
@@ -293,6 +310,7 @@ const HomeScreen = () => {
         video: false,
         vote_average: 6.2,
         vote_count: 5,
+        
       },
       {
         adult: false,
@@ -348,20 +366,25 @@ const HomeScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Pressable
+        <TouchableOpacity
           style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
-          
+
         >
-          <Ionicons name="notifications-outline" size={24} color="black" />
-          <Ionicons name="location-outline" size={24} color="black" onPress={() => navigation.navigate("Places")}/>
-            <Text style={style.text}>{selectedCity}</Text>
-        </Pressable>
+          <Ionicons name="notifications-outline" size={24} color={activeColors.font} />
+          <Ionicons name="location-outline" size={24} color={activeColors.font} onPress={() => navigation.navigate("Places")}/>
+            <Text style={{fontSize: 16,marginRight: 15,color: activeColors.font}}>{selectedCity}</Text>
+        </TouchableOpacity>
       ),
     });
   }, [navigation, moveAnimation, selectedCity]);
 
   return (
-    <View style={style.container}>
+
+    <View style={{
+      backgroundColor: activeColors.bg,
+      justifyContent: 'center',
+      alignItems: 'center',}}
+    >
         <FlatList
         numColumns={2}
         columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -369,20 +392,8 @@ const HomeScreen = () => {
         data={data}
         renderItem={({ item, index }) => <MovieCard item={item} key={index} />}
       />
-    </View>
+    </View> 
   );
 };
 
 export default HomeScreen;
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 16,
-    marginRight: 15
-  },
-});

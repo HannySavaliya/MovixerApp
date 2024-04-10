@@ -1,17 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { colors } from '../Theme/theme';
 
 const SplashScreen = ({ navigation }) => {
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         navigation.navigate('HomeScreen');
-    //     }, 5000);
-
-    //     return () => clearTimeout(timer);
-    // }, []);
-
     return (
         <View style={style.container}>
             <Image
@@ -19,7 +10,7 @@ const SplashScreen = ({ navigation }) => {
                 contentFit="cover"
                 source={require("../assets/Movixer-Logo.png")}
             />
-            <Text style={style.title}>Hello Movixer!</Text>
+            <Text style={style.title}>Movixer</Text>
             <TouchableOpacity style={style.signup} onPress={() => navigation.navigate('Signup')}>
                 <Text style={style.text}>Signup</Text>
             </TouchableOpacity>
@@ -27,7 +18,6 @@ const SplashScreen = ({ navigation }) => {
                 <Text style={style.text}>Login</Text>
             </TouchableOpacity>
         </View>
-        
     );
 }
 
@@ -58,14 +48,14 @@ const style = StyleSheet.create({
     signup: {
         padding: 12,
         width: 350,
-        backgroundColor: colors.secondary,
+        backgroundColor: "#FFEBB2",
         borderRadius: 50,
         marginTop: 200
     },
     login: {
         padding: 12,
         width: 350,
-        backgroundColor: colors.secondary,
+        backgroundColor: "#FFEBB2",
         borderRadius: 50,
         marginTop: 20
     },
@@ -74,4 +64,4 @@ const style = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold'
     }
-})
+});
